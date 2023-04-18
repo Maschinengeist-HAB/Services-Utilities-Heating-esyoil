@@ -1,0 +1,4 @@
+Service/vendor
+Service/composer.lock
+
+composer.phar
