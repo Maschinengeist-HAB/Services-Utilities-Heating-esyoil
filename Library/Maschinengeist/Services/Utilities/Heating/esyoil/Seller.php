@@ -1,5 +1,5 @@
 <?php
-namespace Maschinengeist\Services\WWW\esyoil;
+namespace Maschinengeist\Services\Utilities\Heating\esyoil;
 
 class Seller
 {

@@ -1,5 +1,9 @@
-# Services-WWW-esyoil
+# Services-Utilities-Heating-esyoil
 Access esyoil web api via MQTT messages
+
+## Service description
+[esyoil](https://www.esyoil.com/) is a broker website for quoting heating oil delivery, who operates in Deutschland. 
+This service is able to get the lowest price quote given for a zip code and an amount of liters of heating oil.
 
 ## Configuration
 The service uses a set of environment variables for configuration in the Dockerfile:
@@ -21,11 +25,11 @@ The service will publish it's current connection state to `base_topic/lwt`.
 ## How to pull and run this image
 Pull this image by
 
-    docker pull ghcr.io/maschinengeist-hab/services-www-esyoil:latest
+    docker pull ghcr.io/maschinengeist-hab/services-utilities-heating-esyoil:latest
 
 Run this image by
 
-    docker run -d --name esyoil-service ghcr.io/maschinengeist-hab/services-www-esyoil:latest
+    docker run -d --name esyoil-service ghcr.io/maschinengeist-hab/services-utilities-heating-esyoil:latest
 
 ## Command examples
 ### Get a quote

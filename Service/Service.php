@@ -1,7 +1,7 @@
 #! /usr/bin/env php
 <?php
 # ------------------------------------------------------------------------------------------ global
-namespace Maschinengeist\Services\WWW\esyoil;
+namespace Maschinengeist\Services\Utilities\Heating\esyoil;
 
 use Exception;
 use PhpMqtt\Client\ConnectionSettings;
