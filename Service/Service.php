@@ -125,7 +125,7 @@ if (function_exists('pcntl_signal')) {
     pcntl_signal(SIGINT, function () use ($mqtt) {
         $mqtt->interrupt();
     });
-};
+}
 
 try {
     $mqtt->connect($mqttConnectionSettings);
