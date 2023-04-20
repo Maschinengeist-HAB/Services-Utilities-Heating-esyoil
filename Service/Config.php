@@ -17,7 +17,7 @@ class Config {
      * MQTT Host
      * Set via environment variable MQTT_HOST
      *
-     * @return string, defaults to message-broker
+     * @return string defaults to message-broker
      */
     public static function getMqttHost() : string {
         return $_ENV['MQTT_HOST'] ?? 'message-broker';
@@ -114,7 +114,7 @@ class Config {
      * If no liters are requested, use this for the request.
      * Set via environment variable DEFAULT_REQUESTED_LITERS
      *
-     * @return int, defaults to 1000
+     * @return int defaults to 1000
      */
     public static function getDefaultRequestLiters() : int {
         return (int) ($_ENV['DEFAULT_REQUESTED_LITERS'] ?? 1000);
@@ -124,7 +124,7 @@ class Config {
      * If no zip cade is transmitted while requested, this is used
      * Set via environment variable DEFAULT_ZIPCODE
      *
-     * @return string, defaults to 33330
+     * @return string defaults to 33330
      */
     public static function getDefaultZipCode() : string {
         return $_ENV['DEFAULT_ZIPCODE'] ?? '33330';
