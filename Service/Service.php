@@ -160,7 +160,7 @@ try {
             try {
                 $message_data = json_decode($message, true, 512, JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
-                log_errors($e->getMessage(), $mqtt, Config::getMqttErrorTopic();
+                log_errors($e->getMessage(), $mqtt, Config::getMqttErrorTopic());
                 return;
             }
 
