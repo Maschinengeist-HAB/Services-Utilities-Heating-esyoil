@@ -102,6 +102,11 @@ function handle_quote_request(MqttClient $mqttClient, $message_data): void {
     $client->publish($seller);
 }
 
+# ------------------------------------------------------------------------------------------ main
+
+if ( function_exists('pcntl_async_signals') ) {
+    pcntl_async_signals(true);
+}
 
 try {
     $mqtt = new MqttClient(Config::getMqttHost(), Config::getMqttPort(), SERVICE_NAME);
@@ -116,15 +121,11 @@ $mqttConnectionSettings = (new ConnectionSettings)
     ->setRetainLastWill(true)
     ->setLastWillMessage('offline');
 
-pcntl_signal(
-    /**
-     * @return void
-     */
-    SIGINT, function () use ($mqtt) {
+if (function_exists('pcntl_signal')) {
+    pcntl_signal(SIGINT, function () use ($mqtt) {
         $mqtt->interrupt();
-    }
-);
-
+    });
+};
 
 try {
     $mqtt->connect($mqttConnectionSettings);
