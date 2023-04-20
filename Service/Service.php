@@ -16,7 +16,7 @@ use PhpMqtt\Client\MqttClient;
 
 error_reporting(E_ALL);
 date_default_timezone_set($_ENV['TZ'] ?? 'Europe/Berlin');
-define('SERVICE_NAME', 'maschinengeist-services-www-esyoil');
+define('SERVICE_NAME', 'maschinengeist-services-utilities-heating-esyoil');
 # ------------------------------------------------------------------------------------------ resolve dependencies
 require_once __DIR__ . '/vendor/autoload.php';
 
