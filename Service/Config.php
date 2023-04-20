@@ -10,7 +10,7 @@ class Config {
      * @return string
      */
     public static function getVersion() : string {
-        return '1.0.1';
+        return '2.0.0';
     }
 
     /**
