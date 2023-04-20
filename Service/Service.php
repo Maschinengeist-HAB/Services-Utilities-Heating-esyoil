@@ -66,11 +66,12 @@ function handle_quote_request(MqttClient $mqttClient, $message_data): void {
         ?? '33330';
 
     if ($requested_liters < Config::getDefaultMinQuoteLiters()) {
-        # @Todo Fix topic
         log_errors(
             "$requested_liters is below the threshold of "
             . Config::getDefaultMinQuoteLiters(),
-            $mqttClient);
+            $mqttClient,
+            Config::getMqttErrorTopic()
+        );
         return;
     }
 
@@ -78,8 +79,7 @@ function handle_quote_request(MqttClient $mqttClient, $message_data): void {
         $quote = new Quote($zip_code, $requested_liters);
         $seller = $quote->get();
     } catch (Exception $exception) {
-        # @Todo Fix topic
-        log_errors($exception->getMessage(), $mqttClient);
+        log_errors($exception->getMessage(), $mqttClient, Config::getMqttErrorTopic());
         return;
     }
 
@@ -160,8 +160,7 @@ try {
             try {
                 $message_data = json_decode($message, true, 512, JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
-                # @Todo Fix topic
-                log_errors($e->getMessage(), $mqtt);
+                log_errors($e->getMessage(), $mqtt, Config::getMqttErrorTopic();
                 return;
             }
 
@@ -172,16 +171,14 @@ try {
                     break;
 
                 default:
-                    # @Todo Fix topic
-                    log_errors('Empty message on read topic received.', $mqtt);
+                    log_errors('Empty message on read topic received.', $mqtt, Config::getMqttErrorTopic());
                     return;
             }
 
         }
     }, 0);
 } catch (DataTransferException|RepositoryException $e) {
-    # @Todo Fix topic
-    log_errors($e->getMessage(), $mqtt);
+    log_errors($e->getMessage(), $mqtt, Config::getMqttErrorTopic());
 }
 
 try {

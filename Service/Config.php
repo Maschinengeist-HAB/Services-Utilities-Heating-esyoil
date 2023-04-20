@@ -84,6 +84,16 @@ class Config {
     }
 
     /**
+     * MQTT base topic
+     * Set via environment variable MQTT_ERROR_TOPIC
+     *
+     * @return string defaults to maschinengeist/services/utilities/heating/esyoil/errors
+     */
+    public static function getMqttErrorTopic() : string {
+        return $_ENV['MQTT_ERROR_TOPIC'] ?? self::getMqttBaseTopic() . '/errors';
+    }
+
+    /**
      * MQTT last will topic
      *
      * @return string defaults to maschinengeist/services/utilities/heating/esyoil/lwt
