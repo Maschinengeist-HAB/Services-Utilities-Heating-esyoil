@@ -10,13 +10,14 @@ use PhpMqtt\Client\Exceptions\ConnectingToBrokerFailedException;
 use PhpMqtt\Client\Exceptions\DataTransferException;
 use PhpMqtt\Client\Exceptions\InvalidMessageException;
 use PhpMqtt\Client\Exceptions\MqttClientException;
+use PhpMqtt\Client\Exceptions\ProtocolNotSupportedException;
 use PhpMqtt\Client\Exceptions\ProtocolViolationException;
 use PhpMqtt\Client\Exceptions\RepositoryException;
 use PhpMqtt\Client\MqttClient;
 
 error_reporting(E_ALL);
 date_default_timezone_set($_ENV['TZ'] ?? 'Europe/Berlin');
-define('SERVICE_NAME', 'maschinengeist-services-www-esyoil');
+define('SERVICE_NAME', 'maschinengeist-services-utilities-heating-esyoil');
 # ------------------------------------------------------------------------------------------ resolve dependencies
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -53,6 +54,7 @@ function log_errors(string $error_msg, MqttClient $mqtt, string $topic = 'error/
 /**
  * @param MqttClient $mqttClient
  * @param $message_data
+ * @throws ProtocolNotSupportedException
  */
 function handle_quote_request(MqttClient $mqttClient, $message_data): void {
     error_log(print_r($message_data, true));
@@ -66,11 +68,12 @@ function handle_quote_request(MqttClient $mqttClient, $message_data): void {
         ?? '33330';
 
     if ($requested_liters < Config::getDefaultMinQuoteLiters()) {
-        # @Todo Fix topic
         log_errors(
             "$requested_liters is below the threshold of "
             . Config::getDefaultMinQuoteLiters(),
-            $mqttClient);
+            $mqttClient,
+            Config::getMqttErrorTopic()
+        );
         return;
     }
 
@@ -78,8 +81,7 @@ function handle_quote_request(MqttClient $mqttClient, $message_data): void {
         $quote = new Quote($zip_code, $requested_liters);
         $seller = $quote->get();
     } catch (Exception $exception) {
-        # @Todo Fix topic
-        log_errors($exception->getMessage(), $mqttClient);
+        log_errors($exception->getMessage(), $mqttClient, Config::getMqttErrorTopic());
         return;
     }
 
@@ -112,7 +114,7 @@ try {
     $mqtt = new MqttClient(Config::getMqttHost(), Config::getMqttPort(), SERVICE_NAME);
 } catch (Exception $e) {
     error_log($e->getMessage());
-    # @Todo: Aboort, if not successful
+    exit(1);
 }
 
 $mqttConnectionSettings = (new ConnectionSettings)
@@ -125,7 +127,7 @@ if (function_exists('pcntl_signal')) {
     pcntl_signal(SIGINT, function () use ($mqtt) {
         $mqtt->interrupt();
     });
-};
+}
 
 try {
     $mqtt->connect($mqttConnectionSettings);
@@ -135,8 +137,7 @@ try {
         "Can't connect to %s (%s): %s. Aborting.", Config::getMqttHost(), Config::getMqttPort(), $e->getMessage()
         )
     );
-    # @Todo Fix error return code
-    exit(1);
+    exit(107);
 }
 
 try {
@@ -160,8 +161,7 @@ try {
             try {
                 $message_data = json_decode($message, true, 512, JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
-                # @Todo Fix topic
-                log_errors($e->getMessage(), $mqtt);
+                log_errors($e->getMessage(), $mqtt, Config::getMqttErrorTopic());
                 return;
             }
 
@@ -172,30 +172,26 @@ try {
                     break;
 
                 default:
-                    # @Todo Fix topic
-                    log_errors('Empty message on read topic received.', $mqtt);
+                    log_errors('Empty message on read topic received.', $mqtt, Config::getMqttErrorTopic());
                     return;
             }
 
         }
     }, 0);
 } catch (DataTransferException|RepositoryException $e) {
-    # @Todo Fix topic
-    log_errors($e->getMessage(), $mqtt);
+    log_errors($e->getMessage(), $mqtt, Config::getMqttErrorTopic());
 }
 
 try {
     $mqtt->loop();
 } catch (DataTransferException|InvalidMessageException|ProtocolViolationException|MqttClientException $e) {
     error_log($e->getMessage());
-    # @Todo Fix error result code
-    exit(2);
+    exit(121);
 }
 
 try {
     $mqtt->disconnect();
 } catch (DataTransferException $e) {
     error_log(sprintf("Can't disconnect from MQTT: %s", $e->getMessage()));
-    # @Todo Fix error result code
-    exit(3);
+    exit(121);
 }

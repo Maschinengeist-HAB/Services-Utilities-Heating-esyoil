@@ -10,14 +10,14 @@ The service uses a set of environment variables for configuration in the Dockerf
 
 ### Connection settings
 
-| Variable          | Usage                                                                          | Default value                        |
-|-------------------|--------------------------------------------------------------------------------|--------------------------------------|
-| `MQTT_HOST`       | Specifies the MQTT broker host name                                            | `message-broker`                     |
-| `MQTT_PORT`       | Specifies the MQTT port                                                        | `1883`                               |
-| `MQTT_RETAIN`     | Retain messages or not                                                         | `1` (retain)                         |
-| `MQTT_KEEP_ALIVE` | Keep alive the connection to the MQTT broker every *n* seconds                 | `120`                                |
-| `MQTT_BASE_TOPIC` | MQTT base topic, will prepend to the defined topics, i.e. `base_topic/command` | `maschinengeist/services/www/esyoil` |
-| `TZ`              | Timezone                                                                       | `Europe/Berlin`                      |
+| Variable          | Usage                                                                          | Default value                                      |
+|-------------------|--------------------------------------------------------------------------------|----------------------------------------------------|
+| `MQTT_HOST`       | Specifies the MQTT broker host name                                            | `message-broker`                                   |
+| `MQTT_PORT`       | Specifies the MQTT port                                                        | `1883`                                             |
+| `MQTT_RETAIN`     | Retain messages or not                                                         | `1` (retain)                                       |
+| `MQTT_KEEP_ALIVE` | Keep alive the connection to the MQTT broker every *n* seconds                 | `120`                                              |
+| `MQTT_BASE_TOPIC` | MQTT base topic, will prepend to the defined topics, i.e. `base_topic/command` | `maschinengeist/services/utilities/heating/esyoil` |
+| `TZ`              | Timezone                                                                       | `Europe/Berlin`                                    |
 
 ### Last will and testament
 The service will publish it's current connection state to `base_topic/lwt`.
