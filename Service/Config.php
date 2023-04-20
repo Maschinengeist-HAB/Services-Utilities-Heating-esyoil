@@ -53,15 +53,14 @@ class Config {
         return $_ENV['MQTT_PASSWORD'] ?? '';
     }
 
-    # @Todo Fix keep alive param handling
     /**
      * MQTT keep alive in seconds
      * Set via environment variable MQTT_KEEP_ALIVE
      *
-     * @return string, defaults to none
+     * @return int defaults to none
      */
-    public static function getMqttKeepAlive() : bool {
-        return $_ENV['MQTT_KEEP_ALIVE'] ?? true;
+    public static function getMqttKeepAlive() : int {
+        return (int) ($_ENV['MQTT_KEEP_ALIVE'] ?? 120);
     }
 
     /**
