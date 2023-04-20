@@ -114,7 +114,7 @@ try {
     $mqtt = new MqttClient(Config::getMqttHost(), Config::getMqttPort(), SERVICE_NAME);
 } catch (Exception $e) {
     error_log($e->getMessage());
-    # @Todo: Aboort, if not successful
+    exit(1);
 }
 
 $mqttConnectionSettings = (new ConnectionSettings)
