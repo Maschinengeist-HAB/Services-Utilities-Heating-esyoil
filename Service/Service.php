@@ -10,6 +10,7 @@ use PhpMqtt\Client\Exceptions\ConnectingToBrokerFailedException;
 use PhpMqtt\Client\Exceptions\DataTransferException;
 use PhpMqtt\Client\Exceptions\InvalidMessageException;
 use PhpMqtt\Client\Exceptions\MqttClientException;
+use PhpMqtt\Client\Exceptions\ProtocolNotSupportedException;
 use PhpMqtt\Client\Exceptions\ProtocolViolationException;
 use PhpMqtt\Client\Exceptions\RepositoryException;
 use PhpMqtt\Client\MqttClient;
@@ -53,6 +54,7 @@ function log_errors(string $error_msg, MqttClient $mqtt, string $topic = 'error/
 /**
  * @param MqttClient $mqttClient
  * @param $message_data
+ * @throws ProtocolNotSupportedException
  */
 function handle_quote_request(MqttClient $mqttClient, $message_data): void {
     error_log(print_r($message_data, true));
