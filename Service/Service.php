@@ -102,7 +102,6 @@ function handle_quote_request(MqttClient $mqttClient, $message_data): void {
     $client->publish($seller);
 }
 
-$mqtt = new MqttClient(MQTT_HOST, MQTT_PORT, SERVICE_NAME);
 
 try {
     $mqtt = new MqttClient(Config::getMqttHost(), Config::getMqttPort(), SERVICE_NAME);
