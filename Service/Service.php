@@ -137,8 +137,7 @@ try {
         "Can't connect to %s (%s): %s. Aborting.", Config::getMqttHost(), Config::getMqttPort(), $e->getMessage()
         )
     );
-    # @Todo Fix error return code
-    exit(1);
+    exit(107);
 }
 
 try {
@@ -187,14 +186,12 @@ try {
     $mqtt->loop();
 } catch (DataTransferException|InvalidMessageException|ProtocolViolationException|MqttClientException $e) {
     error_log($e->getMessage());
-    # @Todo Fix error result code
-    exit(2);
+    exit(121);
 }
 
 try {
     $mqtt->disconnect();
 } catch (DataTransferException $e) {
     error_log(sprintf("Can't disconnect from MQTT: %s", $e->getMessage()));
-    # @Todo Fix error result code
-    exit(3);
+    exit(121);
 }
